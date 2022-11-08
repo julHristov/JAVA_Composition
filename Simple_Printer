@@ -1,0 +1,78 @@
+public class Main {
+    public static void main(String[] args) {
+        Toner toner = new Toner(100);
+        Duplex duplex = new Duplex(true);
+        Printer printer = new Printer(toner, duplex);
+        System.out.println(printer.printing(100));
+        printer.fillToner(101);
+    }
+}
+
+public class Printer {
+    private int printedPages;
+    public Toner toner;
+    public Duplex duplex;
+
+    public Printer(Toner toner, Duplex duplex) {
+        this.printedPages = 0;
+        this.toner = toner;
+        this.duplex = duplex;
+    }
+
+    public String printing(int pages){
+        if(pages > toner.getInkLevel()){
+            System.out.println("Not enough ink in toner for printing " + pages + " pages");
+        } else{
+            if(duplex.isDuplex()){
+                this.printedPages+= (pages / 2) + (pages % 2);
+            }else{
+                this.printedPages+= pages;
+            }
+            toner.setInkLevel(toner.getInkLevel() - pages);
+        }
+        return printedPages + " pages was printed. Ink level: " + toner.getInkLevel();
+    }
+
+    public void fillToner(int ink){
+        if(ink > 100){
+            toner.setInkLevel(100);
+        } else{
+            toner.setInkLevel(ink);
+        }
+
+        System.out.println("Toner filled up to " + toner.getInkLevel() + "%");
+    }
+}
+
+public class Toner {
+    private int inkLevel;
+
+    public Toner(int inkLevel) {
+        this.inkLevel = inkLevel;
+    }
+
+    public void fillPrinter(int ink){
+      }
+
+    public int getInkLevel() {
+        return inkLevel;
+    }
+    public void setInkLevel(int inkLevel){
+        this.inkLevel = inkLevel;
+        if(inkLevel <= 0){
+            System.out.println("Out of ink. Fill up toner");
+        }
+    }
+}
+
+public class Duplex {
+    private boolean isDuplex;
+
+    public Duplex(boolean isDuplex) {
+        this.isDuplex = isDuplex;
+    }
+
+    public boolean isDuplex() {
+        return isDuplex;
+    }
+}
